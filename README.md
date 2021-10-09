@@ -8,7 +8,6 @@ Running then API application against a local or remote development clone of **[o
 - cd api/
 - cp composer.json composer-dev.json
 - adjust the repository entry in composer-dev.json to point to your repo.
-- change the "require" entry in composer-dev.json from "open-telemetry/opentelemetry-php-contrib" to eg. "your-namespace/opentelemetry-php-contrib": "dev-branchname"
 - Prepend any subsequent calls to composer with "COMPOSER=composer-dev.json". eg.: COMPOSER=composer-dev.json composer install
 
 
