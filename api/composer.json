@@ -1,6 +1,12 @@
 {
     "type": "project",
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/open-telemetry/opentelemetry-php"
+        }
+    ],
     "require": {
         "php": ">=8.0.2",
         "ext-ctype": "*",
@@ -29,7 +35,8 @@
         "symfony/serializer": "5.3.*",
         "symfony/twig-bundle": "5.3.*",
         "symfony/validator": "5.3.*",
-        "symfony/yaml": "5.3.*"
+        "symfony/yaml": "5.3.*",
+        "open-telemetry/opentelemetry-php-contrib": "dev-main"
     },
     "require-dev": {
         "api-platform/schema-generator": "^3.0",
