@@ -1,0 +1,22 @@
+open_telemetry:
+    enabled: true # this is a symfony build in configuration. allows for en-/disabling the bundle per dev, test, prod, etc. environment
+    service_name: %env(resolve:OTEL_SERVICE_NAME)% # from OTEL_SERVICE_NAME env variable via .env file, k8s secret, etc.
+    root_sampler: always_on # values: always_on, always_off, trace_id_ratio_based (get wrapped in parent_based)
+    span_limits:
+        attribute_count: 128
+        attribute_value_length: 9223372036854775807 (This is INT_MAX 64 bit system as used in SpanLimitsBuilder)
+        event_count: 128
+        link_count: 128
+        attribute_per_event: 128
+        attribute_per_link: 128
+    span_processor: simple # values: simple, batch, noop -  Would it make sense to allow multiple processors?
+    default_exporter_dsn: %env(resolve:OTEL_DEFAULT_EXPORTER_DSN)% # from env var (see above), example jageer+http://jaeger:9412/api/v2/spans
+                                                                   # Can be null if entries in "exporters" exist
+    exporters: 
+        - dsn: zipkin+http://zipkin:1234 # dsn example
+        - type: newrelic
+          url: http://zipkin:1234
+          arguments:
+              license_key: %env(resolve:NEW_RELIC_LICENSE_KEY)% from env var (see above)
+          
+    
