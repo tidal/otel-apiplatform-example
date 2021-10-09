@@ -20,5 +20,7 @@
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
-###> dev composer file ###
+###> dev composer files ###
 composer-dev.json
+composer-dev.lock
+###< symfony/phpunit-bridge ###
