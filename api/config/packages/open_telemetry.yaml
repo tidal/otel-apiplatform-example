@@ -6,7 +6,7 @@ open_telemetry:
         root_sampler: always_on # values: always_on, always_off, trace_id_ratio_based (get wrapped in parent_based)
         span_limits:
             attribute_count: 128
-            attribute_value_length: 9223372036854775807 (This is INT_MAX 64 bit system as used in SpanLimitsBuilder)
+            attribute_value_length: 9223372036854775807 # This is INT_MAX 64 bit system as used in SpanLimitsBuilder
             event_count: 128
             link_count: 128
             attribute_per_event: 128
