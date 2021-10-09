@@ -14,9 +14,11 @@ open_telemetry:
         span_processor: simple # values: simple, batch, noop -  Would it make sense to allow multiple processors?
         default_exporter_dsn: %env(resolve:OTEL_DEFAULT_EXPORTER_DSN)% # from env var (see above), example jageer+http://jaeger:9412/api/v2/spans
                                                                        # Can be null if entries in "exporters" exist
-        exporters: 
-            - dsn: zipkin+http://zipkin:1234 # dsn example
-            - type: newrelic
+        exporters:
+            # dsn example
+            - dsn: zipkin+http://zipkin:1234 
+            # parameter example
+            - type: newrelic 
               url: http://newrelic:1234
               arguments:
                   license_key: %env(resolve:NEW_RELIC_LICENSE_KEY)% from env var (see above)
