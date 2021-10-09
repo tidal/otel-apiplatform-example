@@ -15,7 +15,7 @@ open_telemetry:
     exporters: 
         - dsn: zipkin+http://zipkin:1234 # dsn example
         - type: newrelic
-          url: http://zipkin:1234
+          url: http://newrelic:1234
           arguments:
               license_key: %env(resolve:NEW_RELIC_LICENSE_KEY)% from env var (see above)
           
