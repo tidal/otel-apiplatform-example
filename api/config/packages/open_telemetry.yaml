@@ -2,7 +2,7 @@ open_telemetry:
     enabled: true # this is a symfony build in configuration. allows for en-/disabling the bundle per dev, test, prod, etc. environment
     tracing:
         enabled: true # en-/disabling tracing (see above)
-        service_name: %env(resolve:OTEL_SERVICE_NAME)% # from OTEL_SERVICE_NAME env variable via .env file, k8s secret, etc.
+        service_name: "%env(resolve:OTEL_SERVICE_NAME)%" # from OTEL_SERVICE_NAME env variable via .env file, k8s secret, etc.
         root_sampler: always_on # values: always_on, always_off, trace_id_ratio_based (get wrapped in parent_based)
         span_limits:
             attribute_count: 128
@@ -15,7 +15,7 @@ open_telemetry:
             - simple 
             - batch
             - noop
-        default_exporter_dsn: %env(resolve:OTEL_DEFAULT_EXPORTER_DSN)% # from env var (see above), example jageer+http://jaeger:9412/api/v2/spans
+        default_exporter_dsn: "%env(resolve:OTEL_DEFAULT_EXPORTER_DSN)%" # from env var (see above), example jageer+http://jaeger:9412/api/v2/spans
                                                                        # Can be null if entries in "exporters" exist
         exporters:
             # dsn example
@@ -24,6 +24,6 @@ open_telemetry:
             - type: newrelic 
               url: http://newrelic:1234
               arguments:
-                  license_key: %env(resolve:NEW_RELIC_LICENSE_KEY)% #from env var (see above)
+                  license_key: "%env(resolve:NEW_RELIC_LICENSE_KEY)%" #from env var (see above)
           
     
