@@ -21,6 +21,6 @@ open_telemetry:
             - type: newrelic 
               url: http://newrelic:1234
               arguments:
-                  license_key: %env(resolve:NEW_RELIC_LICENSE_KEY)% from env var (see above)
+                  license_key: %env(resolve:NEW_RELIC_LICENSE_KEY)% #from env var (see above)
           
     
