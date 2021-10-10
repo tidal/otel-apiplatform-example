@@ -11,7 +11,8 @@ open_telemetry:
             link_count: 128
             attribute_per_event: 128
             attribute_per_link: 128
-        span_processor: simple # values: simple, batch, noop -  Would it make sense to allow multiple processors?
+        span_processors: # values: simple, batch, noop -  Would it make sense to allow multiple processors?
+            - simple 
         default_exporter_dsn: %env(resolve:OTEL_DEFAULT_EXPORTER_DSN)% # from env var (see above), example jageer+http://jaeger:9412/api/v2/spans
                                                                        # Can be null if entries in "exporters" exist
         exporters:
