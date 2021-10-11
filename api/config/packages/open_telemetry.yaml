@@ -1,29 +1,67 @@
 open_telemetry:
     enabled: true # this is a symfony build in configuration. allows for en-/disabling the bundle per dev, test, prod, etc. environment
+    
+    resource:
+        limits:
+            count: 128
+            value_length: 9223372036854775807 # INT_MAX
+            
+        attributes:
+            #deployment.environment: autofilled in sf
+            foo.bar: baz
+            service.name: "%env(resolve:SERVICE_NAME)%"
+            service.namespace: fooSpace
+            k8s.cluster.name: production-1
+                    
     trace:
         enabled: true # en-/disabling tracing (see above)
-        service_name: "%env(resolve:OTEL_SERVICE_NAME)%" # from OTEL_SERVICE_NAME env variable via .env file, k8s secret, etc.
-        root_sampler: always_on # values: always_on, always_off, trace_id_ratio_based (get wrapped in parent_based)
-        span_limits:
-            attribute_count: 128
-            attribute_value_length: 9223372036854775807 # This is INT_MAX 64 bit system as used in SpanLimitsBuilder
-            event_count: 128
-            link_count: 128
-            attribute_per_event: 128
-            attribute_per_link: 128
-        span_processors: # values: simple, batch, noop 
-            - simple 
-            - batch
-            - noop
-        default_exporter_dsn: "%env(resolve:OTEL_DEFAULT_EXPORTER_DSN)%" # from env var (see above), example jageer+http://jaeger:9412/api/v2/spans
-                                                                       # Can be null if entries in "exporters" exist
-        exporters:
+      
+        sampler:
+            root: 
+                type: custom
+                class: MySampler
+                options:
+                    foo: bar
+            remote:
+                sampled: 
+                    type: trace_id_ratio_based
+                    options:
+                        probability: 0.5
+                not_sampled: always_off
+            local:
+                sampled: always_on
+                not_sampled: always_off
+                 
+        span:
+            limits:
+                attribute_count: 128
+                attribute_value_length: 9223372036854775807 # This is INT_MAX 64 bit system as used in SpanLimitsBuilder
+                event_count: 128
+                link_count: 128
+                attribute_per_event: 128
+                attribute_per_link: 128
+            processors: # values: simple, batch, noop 
+                - simple 
+                - batch
+                - noop
+                - type: custom
+                  class: MySpanProcessor
+     
+        exporters:  
+            - "%env(resolve:OTEL_DEFAULT_EXPORTER_DSN)%"
             # dsn example
-            - dsn: zipkin+http://zipkin:1234 
+            - zipkin+https://foo
+            - zipkin+http://zipkinhost:1234
+            - dsn: jaeger+https://foo:bar@jaegerhost:1234/path/to/endpoint?foo=bar&baz=foo
             # parameter example
             - type: newrelic 
-              url: http://newrelic:1234
-              arguments:
-                  license_key: "%env(resolve:NEW_RELIC_LICENSE_KEY)%" #from env var (see above)
-          
-    
+              url: http://newrelichost:1234
+              options:
+                  license_key: "%env(resolve:NEW_RELIC_LICENSE_KEY)%" 
+                  #from env var (see above)          
+            - type: custom
+              class: App\Telemetry\MySpanExporter
+              options: 
+                  log_file: /tmp/otel/exporter.log
+            - type: custom
+              id: my_custom_exporter
