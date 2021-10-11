@@ -9,7 +9,7 @@ open_telemetry:
         attributes:
             #deployment.environment: autofilled in sf
             foo.bar: baz
-            service.name: "%env(resolve:SERVICE_NAME)%"
+            service.name: "%env(resolve:SERVICE_NAME)%" # required. Will populate service name trace exporters
             service.namespace: fooSpace
             k8s.cluster.name: production-1
                     
@@ -48,20 +48,24 @@ open_telemetry:
                   class: MySpanProcessor
      
         exporters:  
+            # env var example
             - "%env(resolve:OTEL_DEFAULT_EXPORTER_DSN)%"
-            # dsn example
+            # dsn examples
             - zipkin+https://foo
             - zipkin+http://zipkinhost:1234
+            # dsn key example
             - dsn: jaeger+https://foo:bar@jaegerhost:1234/path/to/endpoint?foo=bar&baz=foo
             # parameter example
             - type: newrelic 
               url: http://newrelichost:1234
               options:
                   license_key: "%env(resolve:NEW_RELIC_LICENSE_KEY)%" 
-                  #from env var (see above)          
+                  #from env var (see above)    
+            # custom exporter referenced via class
             - type: custom
               class: App\Telemetry\MySpanExporter
               options: 
                   log_file: /tmp/otel/exporter.log
+            # custom exporter referenced via DI container ID
             - type: custom
               id: my_custom_exporter
