@@ -47,7 +47,7 @@ open_telemetry:
                 - type: custom
                   class: MySpanProcessor
      
-        exporters:  
+        exporters:  # this entry can also take a single connection string eg.: exporters: zipkin+http://zipkinhost:1234
             # env var example
             - "%env(resolve:OTEL_DEFAULT_EXPORTER_DSN)%"
             # dsn examples
