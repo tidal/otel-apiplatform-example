@@ -3,8 +3,8 @@ open_telemetry:
     
     resource:
         limits:
-            count: 128
-            value_length: 9223372036854775807 # INT_MAX
+            attribute_count: 128
+            attribute_value_length: 9223372036854775807 # INT_MAX
             
         attributes:
             #deployment.environment: autofilled in sf
@@ -19,7 +19,7 @@ open_telemetry:
         sampler:
             root: 
                 type: custom
-                class: MySampler
+                class: App\Telemetry\MySampler
                 options:
                     foo: bar
             remote:
@@ -45,7 +45,7 @@ open_telemetry:
                 - batch
                 - noop
                 - type: custom
-                  class: MySpanProcessor
+                  class: App\Telemetry\MySpanProcessor
      
         exporters:  # this entry can also take a single connection string eg.: exporters: zipkin+http://zipkinhost:1234
             # env var example
